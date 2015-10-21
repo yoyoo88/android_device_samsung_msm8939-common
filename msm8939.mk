@@ -185,3 +185,7 @@ PRODUCT_COPY_FILES += \
 # Lights
 PRODUCT_PACKAGES += \
     lights.msm8916
+
+# libril_shim
+PRODUCT_PACKAGES += \
+   libril_shim

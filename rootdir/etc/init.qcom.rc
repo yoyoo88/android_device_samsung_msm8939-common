@@ -33,6 +33,7 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
 
 on init
+    export LD_SHIM_LIBS /system/lib/libril.so|libril_shim.so
 
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
