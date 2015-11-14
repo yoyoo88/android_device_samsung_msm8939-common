@@ -143,3 +143,9 @@ BOARD_RIL_CLASS := ../../../device/samsung/msm8939-common/ril/
 SIM_COUNT := 2
 TARGET_GLOBAL_CFLAGS += -DANDROID_MULTI_SIM
 TARGET_GLOBAL_CPPFLAGS += -DANDROID_MULTI_SIM
+
+# Sepolicy
+include device/qcom/sepolicy/sepolicy.mk
+
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/msm8939-common/sepolicy
