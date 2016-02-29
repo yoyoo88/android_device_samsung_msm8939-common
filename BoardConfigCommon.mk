@@ -125,3 +125,6 @@ WLAN_MODULES:
 	ln -sf /system/lib/modules/pronto/pronto_wlan.ko $(TARGET_OUT)/lib/modules/wlan.ko
 
 TARGET_KERNEL_MODULES += WLAN_MODULES
+
+# lights
+TARGET_PROVIDES_LIBLIGHT := true
