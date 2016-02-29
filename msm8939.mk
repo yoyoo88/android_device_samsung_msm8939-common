@@ -125,4 +125,15 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    fstab.qcom
+    init.crda.sh \
+    init.qcom.bt.sh \
+    init.qcom.coex.sh \
+    init.sec.boot.sh \
+    init.qcom.fm.sh
+
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.qcom.rc \
+    init.qcom.usb.rc \
+    init.target.rc \
+    ueventd.qcom.rc
