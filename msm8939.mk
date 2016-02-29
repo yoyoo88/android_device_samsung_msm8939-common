@@ -122,3 +122,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf
+
+# Ramdisk
+PRODUCT_PACKAGES += \
+    fstab.qcom
