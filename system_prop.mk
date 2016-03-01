@@ -15,7 +15,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     rild.libargs=-d /dev/smd0 \
     persist.radio.use_se_table_only=1 \
     persist.radio.sib16_support=1 \
-    persist.radio.embms.support=true
+    persist.radio.embms.support=true \
+    persist.radio.multisim.config=dsds \
+    ro.ril.telephony.mqanelements=6 \
+    ro.multisim.simslotcount=2 \
+    ro.multisim.set_audio_params=true \
+    ro.telephony.ril_class=SamsungMSM8939RIL
 
 # Netmgrd
 PRODUCT_PROPERTY_OVERRIDES += \
