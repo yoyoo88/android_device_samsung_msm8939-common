@@ -36,47 +36,10 @@ on early-init
 on fs
     mount_all fstab.qcom
 
-    # Keeping following partitions outside fstab file. As user may not have
-    # these partition flashed on the device. Failure to mount any partition in fstab file
-    # results in failure to launch late-start class.
-
-    wait /dev/block/bootdevice/by-name/cache
-    check_fs /dev/block/bootdevice/by-name/cache ext4
-    mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
-
-    wait /dev/block/bootdevice/by-name/persist
-    check_fs /dev/block/bootdevice/by-name/persist ext4
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
-    mkdir /persist/data 0700  system system
-    restorecon_recursive   /persist
-
-    wait /dev/block/bootdevice/by-name/efs
-    check_fs /dev/block/bootdevice/by-name/efs ext4
-    mount ext4 /dev/block/bootdevice/by-name/efs /efs nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
     chown system radio /efs
     chmod 0771 /efs
     rm -rf /efs/dmverity
     restorecon -R /efs
-	
-on fs_sec_selinux
-	
-	wait /dev/block/bootdevice/by-name/apnhlos
-    mount vfat /dev/block/bootdevice/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware:s0
-
-	wait /dev/block/bootdevice/by-name/modem
-    mount vfat /dev/block/bootdevice/by-name/modem /firmware-modem ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware:s0
-
-	
-on fs_selinux
-
-    wait /dev/block/bootdevice/by-name/apnhlos
-    mount vfat /dev/block/bootdevice/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-    
-    wait /dev/block/bootdevice/by-name/modem
-    mount vfat /dev/block/bootdevice/by-name/modem /firmware-modem ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-
-	
-    #write /sys/kernel/boot_adsp/boot 1
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -93,11 +56,6 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     user camera
     group camera system inet input graphics
 
-#enable zram
-on property:ro.config.zram=true
-    swapon_all fstab.qcom
-    write /proc/sys/vm/swappiness 100
-
 # Allow usb charging to be disabled peristently
 on property:persist.usb.chgdisabled=1
     write /sys/class/power_supply/battery/charging_enabled 0
@@ -105,29 +63,10 @@ on property:persist.usb.chgdisabled=1
 on property:persist.usb.chgdisabled=0
     write /sys/class/power_supply/battery/charging_enabled 1
 
-service qrngp /system/bin/qrngp -f
-   class main
-   user root
-   group root
-   oneshot
-   disabled
-
-on property:sys.boot_completed=1
-   start qrngp
-
 service qseecomd /system/bin/qseecomd
    class core
    user root
    group root
-
-#service aostlmd /system/bin/aostlmd
-#   class late_start
-#   user system
-#   group system net_raw
-
-#service mpdecision /system/bin/mpdecision --avg_comp
-#   user root
-#   disabled
 
 service perfd /system/bin/perfd
    class main
@@ -165,19 +104,6 @@ on boot
     chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch_enable
     chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch
 
-#service ppd /system/bin/mm-pp-daemon
-#    class late_start
-#    disabled
-#    user system
-#    socket pps stream 0660 system system
-#    group system graphics
-
-#on property:init.svc.surfaceflinger=stopped
-#    stop ppd
-
-#on property:init.svc.surfaceflinger=running
-#    start ppd
-
 service wcnss-service /system/bin/wcnss_service
     class main
     user system
@@ -194,63 +120,3 @@ on charger
     start vm_bms
     load_all_props
     start qcom-post-boot
-
-service imsqmidaemon /system/bin/imsqmidaemon
-    class main
-    user system
-    socket ims_qmid stream 0660 system radio
-    group radio net_raw log qcom_diag
-
-service imsdatadaemon /system/bin/imsdatadaemon
-    class main
-    user system
-    socket ims_datad stream 0660 system radio
-    group system wifi radio inet net_raw log qcom_diag net_admin
-    disabled
-
-on property:sys.ims.QMI_DAEMON_STATUS=1
-    start imsdatadaemon
-
-service qmi_sfs_server /system/bin/qmi_sfs_server
-   class core
-   user system
-   group system net_raw
-
-service ims_rtp_daemon /system/bin/ims_rtp_daemon
-   class main
-   user system
-   socket ims_rtpd stream 0660 system radio
-   group radio net_raw diag qcom_diag log
-   disabled
-
-on property:sys.ims.DATA_DAEMON_STATUS=1
-    start ims_rtp_daemon
-
-# Secure Storage startup
-service secure_storage /system/bin/secure_storage_daemon
-    class core
-    user system
-    group system
-    disabled
-
-on property:ro.securestorage.support=true
-    mkdir /dev/.secure_storage
-    chmod 0711 /dev/.secure_storage
-    chown system system /dev/.secure_storage
-    restorecon -R /dev/.secure_storage
-    start secure_storage
-
-on property:ro.securestorage.knox=true
-    mkdir /dev/.secure_storage
-    chmod 0711 /dev/.secure_storage
-    chown system system /dev/.secure_storage
-    restorecon -R /dev/.secure_storage
-    start secure_storage
-
-# SecEDS
-service TvoutService_C /system/bin/bintvoutservice
-    class main
-    user system
-    group graphics
-on property:ro.SecEDS.enable=false
-    stop TvoutService_C
