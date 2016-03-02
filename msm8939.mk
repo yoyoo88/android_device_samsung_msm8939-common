@@ -94,8 +94,6 @@ PRODUCT_COPY_FILES += \
 
 # Media
 PRODUCT_PACKAGES += \
-    libdashplayer \
-    libextmedia_jni \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
@@ -104,11 +102,7 @@ PRODUCT_PACKAGES += \
     libOmxVdec \
     libOmxVenc \
     libstagefrighthw \
-    libOmxVdecHevc \
-    qcmediaplayer
-    
-PRODUCT_BOOT_JARS += \
-    qcmediaplayer
+    libOmxVdecHevc
 
 # Power HAL
 PRODUCT_PACKAGES += \
