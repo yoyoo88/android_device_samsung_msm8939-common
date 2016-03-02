@@ -40,6 +40,10 @@ on fs
     chmod 0771 /efs
     rm -rf /efs/dmverity
     restorecon -R /efs
+    
+    # Audio NXP
+    chmod 0666 /dev/i2c-1
+    chown system system /dev/i2c-1
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
