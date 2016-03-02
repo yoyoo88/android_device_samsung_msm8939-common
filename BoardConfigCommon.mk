@@ -15,6 +15,9 @@
 
 VENDOR_PATH := device/samsung/msm8939-common
 
+# Inherit from samsung qcom-common
+include device/samsung/qcom-common/BoardConfigCommon.mk
+
 TARGET_SPECIFIC_HEADER_PATH := $(VENDOR_PATH)/include
 
 # Platform
