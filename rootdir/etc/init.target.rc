@@ -77,8 +77,9 @@ service perfd /system/bin/perfd
    user root
    disabled
 
-service thermal-engine /system/bin/thermal-engine
-   class main
+service thermal-engine /vendor/bin/thermal-engine
+   class core
+   seclabel u:r:thermal-engine:s0
    user root
    socket thermal-send-client stream 0666 system system
    socket thermal-recv-client stream 0660 system system
