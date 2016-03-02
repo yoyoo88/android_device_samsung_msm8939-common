@@ -189,3 +189,8 @@ PRODUCT_PACKAGES += \
 # libril_shim
 PRODUCT_PACKAGES += \
    libril_shim
+
+# Misc
+PRODUCT_PACKAGES += \
+    libstlport \
+    libboringssl-compat
