@@ -187,6 +187,7 @@ PRODUCT_PACKAGES += \
 
 # Misc
 PRODUCT_PACKAGES += \
+    Stk \
     libstlport \
     libboringssl-compat
 
