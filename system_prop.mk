@@ -83,3 +83,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Time
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.timed.enable=true
+
+# Disable Strict Mode
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.strictmode.disable=true
