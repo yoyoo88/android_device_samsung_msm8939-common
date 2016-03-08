@@ -21,7 +21,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.multisim.simslotcount=2 \
     ro.multisim.set_audio_params=true \
     ro.telephony.ril_class=SamsungMSM8939RIL \
-    ro.telephony.ril.config=simactivation
+    ro.telephony.ril.config=simactivation \
+    persist.data.qmi.adb_logmask=0
 
 # Netmgrd
 PRODUCT_PROPERTY_OVERRIDES += \
