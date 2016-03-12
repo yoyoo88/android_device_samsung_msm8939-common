@@ -192,6 +192,10 @@ PRODUCT_PACKAGES += \
 # IRQ balance
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance.conf:system/vendor/etc/msm_irqbalance.conf
+    
+# GPS HAL
+PRODUCT_PACKAGES += \
+    gps.msm8916
 
 # Common Qualcomm
 $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
