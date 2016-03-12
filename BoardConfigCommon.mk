@@ -141,6 +141,7 @@ BOARD_HARDWARE_CLASS += $(VENDOR_PATH)/cmhw
 
 # MSM8939 Custom RIL
 BOARD_RIL_CLASS := ../../../device/samsung/msm8939-common/ril/
+USE_DEVICE_SPECIFIC_DATASERVICES := true
 
 # Radio
 SIM_COUNT := 2
