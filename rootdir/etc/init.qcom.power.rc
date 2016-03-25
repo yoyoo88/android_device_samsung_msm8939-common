@@ -2,6 +2,8 @@ on early-init
 
 on enable-low-power
 
+    write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 10
+
     # Adaptive LMK
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
     write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250
@@ -12,8 +14,33 @@ on enable-low-power
 
     # HMP Task packing settings for 8939, 8929
     write /proc/sys/kernel/sched_small_task 20
-    write /proc/sys/kernel/sched_mostly_idle_load 30
-    write /proc/sys/kernel/sched_mostly_idle_nr_run 3
+
+    write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu6/sched_mostly_idle_load 30
+    write /sys/devices/system/cpu/cpu7/sched_mostly_idle_load 30
+
+    write /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu6/sched_mostly_idle_nr_run 3
+    write /sys/devices/system/cpu/cpu7/sched_mostly_idle_nr_run 3
+
+    write /sys/devices/system/cpu/cpu0/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu1/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu2/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu3/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu4/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu5/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu6/sched_prefer_idle 0
+    write /sys/devices/system/cpu/cpu7/sched_prefer_idle 0
 
     write /sys/class/devfreq/qcom,cpubw*/governor "bw_hwmon"
     write /sys/class/devfreq/qcom,cpubw*/bw_hwmon/io_percent 20
@@ -50,8 +77,19 @@ on enable-low-power
 
     # enable thermal core_control now
     write /sys/module/msm_thermal/core_control/enabled 1
+    
+    # bring all CPUs online
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu5/online 1
+    write /sys/devices/system/cpu/cpu6/online 1
+    write /sys/devices/system/cpu/cpu7/online 1
 
-    # HMP scheduler (big.Little cluster related) settings
+    # Enable low power modes
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    
+    # HMP scheduler settings
     write /proc/sys/kernel/sched_upmigrate 75
     write /proc/sys/kernel/sched_downmigrate 60
 
@@ -62,25 +100,13 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
     write /proc/sys/kernel/sched_freq_inc_notify 50000
     write /proc/sys/kernel/sched_freq_dec_notify 50000
-
-    # cpu idle load threshold
-    write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu6/sched_mostly_idle_load 30
-    write /sys/devices/system/cpu/cpu7/sched_mostly_idle_load 30
-
-    # bring all CPUs online
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu5/online 1
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 1
-    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    
+    # Enable core control
+    write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 2
+    write /sys/devices/system/cpu/cpu0/core_ctl/max_cpus 4
+    write /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres 68
+    write /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres 40
+    write /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms 100
 
     start perfd
 
