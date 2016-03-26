@@ -298,17 +298,8 @@
         <!-- The Google provider -->
         <item>com.google.android.gms</item>
     </string-array>
-
    <!-- Ambient display. -->
     <integer name="config_screenBrightnessDoze">30</integer>
     <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
     <bool name="config_dozeAfterScreenOff">true</bool>
-
-<!--HArdware Buttons-->
-
-<!-- HW keys prefs-->
-    <bool name="config_hwKeysPref">true</bool>  
- 	<integer name="config_longPressOnHomeBehavior">2</integer>
-	<integer name="config_longPressOnMenuBehavior">3</integer>
-
 </resources>
