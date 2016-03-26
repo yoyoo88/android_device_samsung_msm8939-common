@@ -47,6 +47,10 @@ PRODUCT_COPY_FILES += \
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
+
+# Input Disabler
+PRODUCT_PACKAGES += \
+    InputDisabler
     
 # Audio
 PRODUCT_PACKAGES += \
